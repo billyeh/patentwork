@@ -17,8 +17,9 @@ def gather_data():
 
 def match_ids(r):
   app_ids = ast.literal_eval(open('./parts/' + str(r[0]) + '.' + str(r[1]) + '.part', 'r').read())
-  if os.path.isfile(str(r[0]) + '.' + str(r[1])):
-    start = len(open(str(r[0]) + '.' + str(r[1]), 'a+').read().split('\n'))
+  file_path = './data/' + str(r[0]) + '.' + str(r[1])
+  if os.path.isfile(file_path):
+    start = len(open(file_path, 'a+').read().split('\n'))
   else:
     start = 0
   for i in range(start, 100000):
@@ -26,7 +27,7 @@ def match_ids(r):
     uspto_id = get_id(app_id, year)
     if uspto_id:
       print(uspto_id)
-      open(str(r[0]) + '.' + str(r[1]), 'a+').write(app_ids[i] + ' ' + uspto_id + '\n')
+      open(file_path, 'a+').write(app_ids[i] + ' ' + uspto_id + '\n')
 
 def get_id(id, year):
   url = 'http://appft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PG01&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.html&r=1&f=G&l=50&s1=%22_______%22.PGNR.&OS=DN/_______&RS=DN/_______'
