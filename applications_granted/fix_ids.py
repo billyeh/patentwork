@@ -52,11 +52,7 @@ def match_range(i):
 def main(parts_to_run):
   gather_data()
   jobs = []
-<<<<<<< HEAD
   for i in parts_to_run:
-=======
-  for i in range(12, 14):
->>>>>>> 4962fead35e496bfe28e2d32cc0ae765a26f3f2e
     p = Process(target=match_range, args=(i,))
     jobs.append(p)
     p.start()
