@@ -5,13 +5,14 @@ from bs4 import BeautifulSoup
 from multiprocessing import Process
 
 def gather_data():
-  if not os.path.isfile('app_ids'):
+  file_name = 'app_ids'
+  if not os.path.isfile(file_name):
     app_ids = []
     for app_num, date in app_session.query(App_Application.number, App_Application.date):
       if app_num and date:
         print(str(date.year) + '/' + app_num)
         app_ids.append(str(date.year) + '/' + app_num)
-    open('app_ids', 'a+').write(str(app_ids))
+    open(file_name, 'a+').write(str(app_ids))
   else:
    print('Already have app_ids file')
 
