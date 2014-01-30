@@ -52,7 +52,7 @@ if __name__ == '__main__':
   gather_data()
   
   jobs = []
-  for i in range(5, 7):
+  for i in range(12, 14):
     p = Process(target=match_range, args=(i,))
     jobs.append(p)
     p.start()
