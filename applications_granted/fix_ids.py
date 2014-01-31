@@ -1,6 +1,7 @@
 import os.path
 import ast
 import requests
+import sys
 from bs4 import BeautifulSoup
 from multiprocessing import Process
 
@@ -48,11 +49,21 @@ def match_range(i):
   print('Starting ' + str(lower) + ',' + str(upper) + '...')
   match_ids([lower, upper])
 
-if __name__ == '__main__':
+def main(parts_to_run):
   gather_data()
-  
   jobs = []
-  for i in range(12, 14):
+  for i in parts_to_run:
     p = Process(target=match_range, args=(i,))
     jobs.append(p)
     p.start()
+
+if __name__ == '__main__':
+  if len(sys.argv) < 2:
+    sys.exit('Specify the jobs you want to be run')
+  partitions_to_run = []
+  try:
+    for arg in sys.argv[1:]:
+      partitions_to_run.append(int(arg))
+  except:
+    sys.exit('Error reading arguments, must be integers')
+  main(partitions_to_run)
