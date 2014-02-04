@@ -5,6 +5,8 @@ import sys
 from bs4 import BeautifulSoup
 from multiprocessing import Process
 
+partition_size = 100000
+
 def gather_data():
   file_name = 'app_ids'
   if not os.path.isfile(file_name):
@@ -24,7 +26,7 @@ def match_ids(r):
     start = len(open(file_path, 'a+').read().split('\n'))
   else:
     start = 0
-  for i in range(start, 100000):
+  for i in range(start, partition_size):
     year, app_id = app_ids[i].split('/')
     uspto_id = get_id(app_id, year)
     if uspto_id:
@@ -44,8 +46,8 @@ def get_id(id, year):
           return str(year) + '/' + d.string.strip().replace('/', '')
 
 def match_range(i):
-  lower = i * 100000
-  upper = (i + 1) * 100000
+  lower = i * partition_size
+  upper = (i + 1) * partition_size
   print('Starting ' + str(lower) + ',' + str(upper) + '...')
   match_ids([lower, upper])
 
