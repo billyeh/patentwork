@@ -38,8 +38,11 @@ def get_filename(index):
   return str(lower) + '.' + str(higher)
 
 def log_errors(errors):
+  total = 0
   for filename in errors:
-    print('***' + str(len(errors[filename])) + ' errors in ' + filename + ': ' + str(errors[filename]))
+    total += len(errors[filename])
+    print(filename + ': ' + str(errors[filename]))
+  print(total)
 
 if __name__ == '__main__':
   main()
