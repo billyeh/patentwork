@@ -2,6 +2,8 @@ import os.path
 import ast
 import requests
 import sys
+#!/bin/python
+
 from bs4 import BeautifulSoup
 from multiprocessing import Process
 

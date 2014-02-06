@@ -1,3 +1,5 @@
+#!/bin/python
+
 import sqlalchemy as sa
 import os.path
 import ast
