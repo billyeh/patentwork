@@ -9,7 +9,7 @@ grant_engine = sa.create_engine('mysql://root:330Ablumhall@169.229.7.251:3306/us
 Session = sa.orm.sessionmaker(bind=grant_engine, _enable_transaction_accounting=False)
 grant_session = Session()
 
-app_engine = sa.create_engine('mysql://root:330Ablumhall@169.229.7.251:3306/application')
+app_engine = sa.create_engine('mysql://root:330Ablumhall@169.229.7.251:3306/apptest')
 Session = sa.orm.sessionmaker(bind=app_engine, _enable_transaction_accounting=False)
 app_session = Session()
 
@@ -18,7 +18,9 @@ def gather_data():
     application_ids = []
     for app_id, date in grant_session.query(Application.id, Application.date):
       if date:
-        application_ids.append(str(date.year) + '/' + str(app_id))
+        a = str(date.year) + '/' + str(app_id).replace('/', '')
+        application_ids.append(a)
+        print(a)
     open('application_ids', 'a+').write(str(application_ids))
   else:
     print('Already have application_ids file')
@@ -35,4 +37,5 @@ def fix_data():
 
 if __name__ == '__main__':
   gather_data()
-  fix_data()
+  #fix_data()
+
