@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 
 import sqlalchemy as sa
 import os.path
@@ -27,15 +27,14 @@ def gather_data():
 
 def fix_data():
   if os.path.isfile('application_ids'):
-    application_ids = ast.literal_eval(open('application_ids', 'r').read())
-    for app_id in filter(lambda x: x.split('/')[0] == '2002', application_ids):
-      print(app_id)
-      app = app_session.query(App_Application).filter(App_Application.id == app_id).first()
-      if app:
-        app.granted = 1
-    app_session.commit()
+    app_ids = []
+    granted_apps = set(ast.literal_eval(open('application_ids', 'r').read()))
+    for (app_id,) in app_session.query(App_Application.id):
+      if app_id in granted_apps:
+        app_ids.append(app_id)
+    open('app_application_ids', 'a+').write(str(app_ids))
 
 if __name__ == '__main__':
   gather_data()
-  #fix_data()
+  fix_data()
 
