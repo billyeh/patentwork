@@ -13,28 +13,25 @@ app_engine = sa.create_engine('mysql://root:330Ablumhall@169.229.7.251:3306/appt
 Session = sa.orm.sessionmaker(bind=app_engine, _enable_transaction_accounting=False)
 app_session = Session()
 
-def gather_data():
-  if not os.path.isfile('application_ids'):
-    application_ids = []
-    for app_id, date in grant_session.query(Application.id, Application.date):
-      if date:
-        a = str(date.year) + '/' + str(app_id).replace('/', '')
-        application_ids.append(a)
-        print(a)
-    open('application_ids', 'a+').write(str(application_ids))
-  else:
-    print('Already have application_ids file')
+def gather_grant_data():
+  application_ids = []
+  for (app_id,) in grant_session.query(Application.id):
+    if app_id:
+      a = str(app_id).replace('/', '')
+      application_ids.append(a)
+  open('grant_apps', 'a+').write(str(application_ids))
 
-def fix_data():
-  if os.path.isfile('application_ids'):
-    app_ids = []
-    granted_apps = set(ast.literal_eval(open('application_ids', 'r').read()))
-    for (app_id,) in app_session.query(App_Application.id):
-      if app_id in granted_apps:
-        app_ids.append(app_id)
-    open('app_application_ids', 'a+').write(str(app_ids))
+def gather_app_data():
+  application_ids = []
+  for (app_id,) in app_session.query(App_Application.id):
+    if app_id:
+      a = str(app_id).split('/')[1]
+      application_ids.append(a)
+  open('app_apps', 'a+').write(str(application_ids))
 
 if __name__ == '__main__':
-  gather_data()
-  fix_data()
+  if not os.path.isfile('grant_apps'):
+    gather_grant_data()
+  if not os.path.isfile('app_apps'):
+    gather_app_data()
 
